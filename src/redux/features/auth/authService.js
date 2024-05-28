@@ -66,10 +66,29 @@ const login = async (marketerData) => {
   }
 };
 
+const logout = async () => {
+  try {
+    const response = await axios.delete("http://localhost:3100/api/v1/logout");
+    return response.data.message;
+  } catch (error) {
+    if (error.response) {
+      console.error("Server responded with an error:", error.response.data);
+      console.error("Status code:", error.response.status);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No response received:", error.request);
+    } else {
+      console.error("Error in setting up the request:", error.message);
+    }
+    throw error; // Re-throw the error so it can be handled by the caller
+  }
+};
+
 const authService = {
   register,
   registerWithReferral,
   login,
+  logout,
 };
 
 export default authService;
