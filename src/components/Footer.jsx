@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className=" bg-white py-10 flex flex-col items-center gap-3">
+    <footer className=" bg-white py-10 flex flex-col items-center">
       <div className="flex justify-center items-center w-full max-w-md gap-5 ">
         <div className="footer__img__container  bg-pink-500 ">
           <Link to={"/"}>
@@ -32,8 +32,9 @@ const Footer = () => {
         </div>
       </div>
       <p className="text-center">
-        Copyright &copy; Aislings {new Date().getFullYear()} All Rights Reserved
+        Copyright &copy; Aislings {new Date().getFullYear()}
       </p>
+      <p>All Rights Reserved</p>
     </footer>
   );
 };

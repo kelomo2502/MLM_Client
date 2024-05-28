@@ -124,6 +124,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.marketer = action.payload;
         toast.success("Login successful");
+        console.log(action.payload);
       })
       .addCase(loginMarketer.rejected, (state, action) => {
         state.isLoading = false;

@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../utils/helper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import {
   RESET_AUTH,
@@ -11,7 +11,6 @@ import {
   registerMarketerWithReferral,
 } from "../../redux/features/auth/authSlice";
 import Loader from "../../components/loader/Loader";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
@@ -35,7 +34,7 @@ const RegisterForm = () => {
     }
   }, [location.search]);
 
-  const registerUser = async (e) => {
+  const registerUser = (e) => {
     e.preventDefault();
     if (!name || !phone || !email || !password || !confirmPassword) {
       return toast.error("All fields must be filled");
