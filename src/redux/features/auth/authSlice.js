@@ -46,6 +46,39 @@ export const registerMarketerWithReferral = createAsyncThunk(
     }
   }
 );
+// Login Marketer
+export const loginMarketer = createAsyncThunk(
+  "auth/login",
+  async (marketerData, thunkAPI) => {
+    try {
+      return authService.login(marketerData);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const logoutMarketer = createAsyncThunk(
+  "auth/logout",
+  async (_, thunkAPI) => {
+    try {
+      return authService.logout();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -90,6 +123,43 @@ const authSlice = createSlice({
         toast.success("Registration successful");
       })
       .addCase(registerMarketerWithReferral.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.marketer = null;
+        toast.error(action.payload);
+      })
+
+      // Login Marketer
+      .addCase(loginMarketer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginMarketer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isLoggedIn = true;
+        state.marketer = action.payload;
+        toast.success("You have logged in successfully");
+        console.log(action.payload);
+      })
+      .addCase(loginMarketer.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.marketer = null;
+        toast.error(action.payload);
+      })
+      .addCase(logoutMarketer.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logoutMarketer.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isLoggedIn = false;
+        state.marketer = null;
+        toast.success(action.payload);
+      })
+      .addCase(logoutMarketer.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
