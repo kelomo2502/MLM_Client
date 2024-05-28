@@ -1,8 +1,7 @@
 // App.js
-import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./pages/profile/Dashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import NotFound from "./components/NotFound";
 import RegisterForm from "./pages/auth/Register";
