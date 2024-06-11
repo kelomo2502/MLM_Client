@@ -115,6 +115,10 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
+    restoreAuth(state, action) {
+      state.isLoggedIn = action.payload.isLoggedIn;
+      state.marketer = action.payload.marketer;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -127,6 +131,7 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.isLoggedIn = true;
         state.marketer = action.payload;
+        localStorage.setItem("authState", JSON.stringify(state));
         toast.success("Registration successful");
       })
       .addCase(registerMarketer.rejected, (state, action) => {
@@ -146,6 +151,7 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.isLoggedIn = true;
         state.marketer = action.payload;
+        localStorage.setItem("authState", JSON.stringify(state));
         toast.success("Registration successful");
       })
       .addCase(registerMarketerWithReferral.rejected, (state, action) => {
@@ -168,6 +174,7 @@ const authSlice = createSlice({
         state.marketer = action.payload;
         state.isError = false;
         state.message = "";
+        localStorage.setItem("authState", JSON.stringify(state));
         toast.success("You have logged in successfully");
       })
       .addCase(loginMarketer.rejected, (state, action) => {
@@ -188,6 +195,7 @@ const authSlice = createSlice({
         state.isSuccess = true;
         state.isLoggedIn = false;
         state.marketer = null;
+        localStorage.removeItem("authState");
         toast.success(action.payload);
       })
       .addCase(logoutMarketer.rejected, (state, action) => {
@@ -202,16 +210,13 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getLoginStatus.fulfilled, (state, action) => {
-        console.log(
-          "Reducer getStatus fulfilled action payload:",
-          action.payload
-        );
         state.isLoading = false;
         state.isSuccess = true;
         state.isLoggedIn = action.payload;
         if (action.payload.message === "invalid signature") {
           state.isLoggedIn = false;
         }
+        localStorage.setItem("authState", JSON.stringify(state));
       })
       .addCase(getLoginStatus.rejected, (state, action) => {
         state.isLoading = false;
@@ -222,6 +227,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { RESET_AUTH } = authSlice.actions;
+export const { RESET_AUTH, restoreAuth } = authSlice.actions;
 
 export default authSlice.reducer;

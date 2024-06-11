@@ -5,7 +5,8 @@ import {
   logoutMarketer,
 } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import person from "../../assets/person.jpg";
+import logo from "../../assets/Aisling (2).jpg";
+import { FaCopy } from "react-icons/fa";
 
 const Dashboard = () => {
   const { isLoggedIn, marketer } = useSelector((state) => state.auth);
@@ -13,107 +14,130 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // console.log(marketer.loggedInMarketer);
-  }, []);
-  useEffect(() => {
+    console.log({ isLoggedIn, marketer });
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, dispatch]);
+  }, [isLoggedIn, dispatch, navigate]);
 
   const logoutHandler = () => {
     dispatch(logoutMarketer());
     dispatch(RESET_AUTH());
   };
 
+  const {
+    name,
+    referralLink,
+    referredBy,
+    phone,
+    role,
+    balance,
+    isVerified,
+    email,
+    bankDetail,
+    photo,
+    downlines,
+    commission,
+  } = marketer?.loggedInMarketer || {};
+
   return (
-    <section className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full m-4">
-        <header className="text-center mb-8 flex flex-col items-center">
-          <h3 className="text-2xl font-semiboldbold text-blue-500">
-            Welcome Marketer
-          </h3>
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+      <section className="bg-white p-6 rounded-lg shadow-lg max-w-4xl w-full m-4">
+        <header className="text-center mb-8 gap-2 flex flex-col items-center">
+          <img src={logo} alt="logo" />
+
           <button
             onClick={logoutHandler}
-            className="px-3 py-2 bg-pink-400 my-4 text-black text-2xl rounded-sm grid place-content-center"
+            className="px-3 py-2 bg-gray-200  text-black text-2xl rounded-sm grid place-content-center"
           >
             Logout
           </button>
         </header>
-        <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          <section className="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
+        <article className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+          <div className="bg-gray-50 p-6 rounded-lg shadow-sm text-center">
             <img
-              src={person}
+              src={photo}
               alt="User Photo"
               className="w-24 h-24 rounded-full mx-auto mb-4"
             />
-            <h2 className="text-2xl font-semibold mb-2">John Doe</h2>
+            <h2 className="text-2xl font-semibold mb-2">{name}</h2>
             <p className="text-gray-600">
-              <strong>Username:</strong> johndoe
+              <strong>Phone:</strong>
+              {phone}
             </p>
             <p className="text-gray-600">
-              <strong>Phone:</strong> +1234567890
+              <strong>Role:</strong> {role}
             </p>
             <p className="text-gray-600">
-              <strong>Role:</strong> Administrator
+              <strong>Email:</strong> {email}
             </p>
             <p className="text-gray-600">
-              <strong>Email:</strong> johndoe@example.com
+              <strong>Verified:</strong>
+              {isVerified ? " Verified " : " Not Verified "}
             </p>
-            <p className="text-gray-600">
-              <strong>Verified:</strong> Yes
+          </div>
+          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <p className="text-xl font-thin mb-4 text-blue-500 ">
+              <strong className="font-semibold flex justify-between items-center py-4">
+                <span>Referral Link </span>
+                <span>
+                  <FaCopy />
+                </span>
+              </strong>
+              <span className="text-gray-600">{referralLink}</span>
             </p>
-          </section>
-          <section className="bg-gray-50 p-6 rounded-lg shadow-sm">
+          </div>
+          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4 text-blue-500">
               Bank Details
             </h2>
             <p className="text-gray-600">
-              <strong>Account Name:</strong> Example Name
+              <strong>Account Name:</strong> {bankDetail?.bankName}
             </p>
             <p className="text-gray-600">
-              <strong>Account Number:</strong> 0000000000
+              <strong>Account Number:</strong> {bankDetail?.accountNumber}
             </p>
             <p className="text-gray-600">
-              <strong>Bank Name:</strong> Example Bank
+              <strong>Bank Name:</strong> {bankDetail?.accountName}
             </p>
-            <button
-              onClick={""}
-              className="px-3 py-3 bg-pink-400 my-4 text-black text-2xl rounded-sm grid place-content-center"
-            >
+            <button className="px-3 py-3 bg-gray-200  my-4 text-black text-2xl rounded-sm grid place-content-center">
               Edit bank details
             </button>
-          </section>
-          <section className="bg-gray-50 p-6 rounded-lg shadow-sm">
+          </div>
+          <article className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4 text-blue-500">
               Downlines
             </h2>
             <ul className="list-none space-y-2">
-              <li className="p-2 bg-gray-100 rounded-md text-gray-700">
-                User 1
-              </li>
-              <li className="p-2 bg-gray-100 rounded-md text-gray-700">
-                User 2
-              </li>
-              <li className="p-2 bg-gray-100 rounded-md text-gray-700">
-                User 3
-              </li>
+              {downlines?.map((downline) => {
+                return (
+                  <li
+                    className="p-2 bg-gray-100 rounded-md text-gray-700"
+                    key={downline}
+                  >
+                    <h2>{downline}</h2>
+                  </li>
+                );
+              })}
             </ul>
-          </section>
-          <section className="bg-gray-50 p-6 rounded-lg shadow-sm">
+          </article>
+          <article className="bg-gray-50 p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold mb-4 text-blue-500">
               Commission
             </h2>
             <p className="text-gray-600">
-              <strong>Total Earned:</strong> $5000
+              <strong>Total Earned: </strong>${commission?.actualCommission}
             </p>
             <p className="text-gray-600">
-              <strong>Pending:</strong> $1000
+              <strong>Amount Paid:</strong>${commission?.AmountPaid}
             </p>
-          </section>
-        </main>
-      </div>
-    </section>
+            <p className="text-gray-600">
+              <strong>Product Sold:</strong> {commission?.productName}
+            </p>
+          </article>
+        </article>
+      </section>
+    </main>
   );
 };
 
