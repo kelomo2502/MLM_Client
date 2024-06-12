@@ -23,7 +23,7 @@ function App() {
   return (
     <Router>
       <ToastContainer />
-      <section className="min-h-screen  bg-blue-50 flex flex-col justify-between md:pt-2npm0">
+      <section className="min-h-screen  bg-blue-50 flex flex-col justify-between md:pt-2 glass">
         <Routes>
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/register/:id" element={<RegisterForm />} />

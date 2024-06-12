@@ -14,18 +14,18 @@ const Footer = () => {
           </Link>
         </div>
         <div className="flex  gap-2 ">
-          <a href="">
+          <a href="https://web.facebook.com/aislingsrealty" target="__blank">
             {" "}
             <FaFacebook size={25} color="blue" />
           </a>
-          <a href="">
+          <a href="https://x.com/home" target="__blank">
             <BsTwitterX size={25} color="black" />
           </a>
-          <a href="">
+          <a href="https://www.instagram.com/aislingsrealty/" target="__blank">
             {" "}
             <FaInstagram size={25} color="brown" />
           </a>
-          <a href="">
+          <a href="https://wa.me/2348135724403" target="__blank">
             {" "}
             <FaWhatsapp size={25} color="green" />
           </a>

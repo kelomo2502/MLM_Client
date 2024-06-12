@@ -28,14 +28,16 @@ const Dashboard = () => {
     dispatch(RESET_AUTH());
   };
 
-  const handleCopy = () => {
-    navigator.clipboard
-      .writeText(marketer?.loggedInMarketer?.referralLink || "")
-      .then(() => {
-        setCopySuccess(true);
-        setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
-      })
-      .catch((err) => console.error("Failed to copy referral link:", err));
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        marketer?.loggedInMarketer?.referralLink || ""
+      );
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy referral link:", err);
+    }
   };
 
   const {
@@ -96,7 +98,7 @@ const Dashboard = () => {
                 <span
                   onClick={handleCopy} // Add click event to the icon
                   className="cursor-pointer text-blue-500  hover:text-gray-600 flex gap-2 items-center"
-                  title={copySuccess ? "Copied!" : "Copy to clipboard"}
+                  title={copySuccess ? "Copied!" : "Copy"}
                 >
                   <FaCopy />
                   <p className="text-sm">Copy link</p>
