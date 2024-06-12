@@ -22,9 +22,10 @@ const RegisterForm = () => {
   const dispatch = useDispatch();
   const [referralId, setReferralId] = useState("");
   const location = useLocation();
-  const { isLoading, isLoggedIn, isError, isSuccess } = useSelector(
+  const { isLoading, isLoggedIn, isError, message, isSuccess } = useSelector(
     (state) => state.auth
   );
+
   const navigate = useNavigate();
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -61,18 +62,19 @@ const RegisterForm = () => {
     } else {
       dispatch(registerMarketer(marketerData));
     }
+  };
+
+  useEffect(() => {
+    if (isSuccess && isLoggedIn) {
+      navigate("/");
+    }
     setName("");
     setPhone("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
-  };
-  useEffect(() => {
-    if (isSuccess && isLoggedIn) {
-      navigate("/");
-    }
     dispatch(RESET_AUTH());
-  }, [isLoggedIn, isSuccess, dispatch, navigate]);
+  }, [isSuccess, isLoggedIn]);
   return (
     <>
       {isLoading && <Loader />}
