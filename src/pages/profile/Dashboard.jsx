@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RESET_AUTH,
@@ -13,6 +13,9 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // State to handle copy feedback
+  const [copySuccess, setCopySuccess] = useState(false);
+
   useEffect(() => {
     console.log({ isLoggedIn, marketer });
     if (!isLoggedIn) {
@@ -23,6 +26,16 @@ const Dashboard = () => {
   const logoutHandler = () => {
     dispatch(logoutMarketer());
     dispatch(RESET_AUTH());
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(marketer?.loggedInMarketer?.referralLink || "")
+      .then(() => {
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000); // Reset after 2 seconds
+      })
+      .catch((err) => console.error("Failed to copy referral link:", err));
   };
 
   const {
@@ -48,7 +61,7 @@ const Dashboard = () => {
 
           <button
             onClick={logoutHandler}
-            className="px-3 py-2 bg-gray-200  text-black text-2xl rounded-sm grid place-content-center"
+            className="px-3 py-2 bg-gray-200 hover:bg-pink-300 text-black text-2xl rounded-sm grid place-content-center"
           >
             Logout
           </button>
@@ -77,14 +90,24 @@ const Dashboard = () => {
             </p>
           </div>
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
-            <p className="text-xl font-thin mb-4 text-blue-500 ">
+            <p className="text-xl font-thin mb-4 text-blue-500">
               <strong className="font-semibold flex justify-between items-center py-4">
                 <span>Referral Link </span>
-                <span>
+                <span
+                  onClick={handleCopy} // Add click event to the icon
+                  className="cursor-pointer text-blue-500  hover:text-gray-600 flex gap-2 items-center"
+                  title={copySuccess ? "Copied!" : "Copy to clipboard"}
+                >
                   <FaCopy />
+                  <p className="text-sm">Copy link</p>
                 </span>
               </strong>
               <span className="text-gray-600">{referralLink}</span>
+              {copySuccess && (
+                <span className="text-green-500 text-sm block mt-2">
+                  Copied to clipboard!
+                </span>
+              )}
             </p>
           </div>
           <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
@@ -100,7 +123,7 @@ const Dashboard = () => {
             <p className="text-gray-600">
               <strong>Bank Name:</strong> {bankDetail?.accountName}
             </p>
-            <button className="px-3 py-3 bg-gray-200  my-4 text-black text-2xl rounded-sm grid place-content-center">
+            <button className="px-3 py-3 bg-gray-200 hover:bg-pink-300 my-4 text-black text-2xl rounded-sm grid place-content-center">
               Edit bank details
             </button>
           </div>
