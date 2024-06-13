@@ -104,6 +104,23 @@ export const getLoginStatus = createAsyncThunk(
     }
   }
 );
+export const fetchDownlines = createAsyncThunk(
+  "auth/fetchDownlines",
+  async (marketerId, thunkAPI) => {
+    try {
+      const response = await authService.getDownlines(marketerId);
+      return response;
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -223,6 +240,20 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         console.log(action.payload);
+      })
+      // FetchDownlines
+      .addCase(fetchDownlines.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchDownlines.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.marketer.loggedInMarketer.downlines = action.payload;
+      })
+      .addCase(fetchDownlines.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        toast.error(action.payload);
       });
   },
 });
