@@ -80,7 +80,6 @@ const getLoginStatus = async () => {
       "http://localhost:3100/api/v1/getLoginStatus",
       { withCredentials: true }
     );
-    console.log("Get Status Response:", response.data); // Log the response
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -96,12 +95,29 @@ const getLoginStatus = async () => {
   }
 };
 
+// authService.js
+const getDownlines = async (marketerId) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3100/api/v1/${marketerId}/downlines`
+    );
+    return response.data;
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    throw new Error(message);
+  }
+};
+
 const authService = {
   register,
   registerWithReferral,
   login,
   logout,
   getLoginStatus,
+  getDownlines,
 };
 
 export default authService;

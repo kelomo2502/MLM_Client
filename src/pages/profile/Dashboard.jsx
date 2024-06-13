@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RESET_AUTH,
+  fetchDownlines,
   logoutMarketer,
 } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -17,16 +18,26 @@ const Dashboard = () => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
-    console.log({ isLoggedIn, marketer });
     if (!isLoggedIn) {
       navigate("/");
     }
-  }, [isLoggedIn, dispatch, navigate]);
+  }, [isLoggedIn, dispatch, navigate, marketer]);
+
+  const fetchMarketerDownlines = () => {
+    const marketerId = marketer?.loggedInMarketer?._id;
+    if (marketerId) {
+      dispatch(fetchDownlines(marketerId));
+    }
+  };
 
   const logoutHandler = () => {
     dispatch(logoutMarketer());
     dispatch(RESET_AUTH());
   };
+
+  useEffect(() => {
+    fetchMarketerDownlines();
+  }, []);
 
   const handleCopy = async () => {
     try {
@@ -77,8 +88,7 @@ const Dashboard = () => {
             />
             <h2 className="text-2xl font-semibold mb-2">{name}</h2>
             <p className="text-gray-600">
-              <strong>Phone:</strong>
-              {phone}
+              <strong>Phone:</strong> {phone}
             </p>
             <p className="text-gray-600">
               <strong>Role:</strong> {role}
@@ -87,7 +97,7 @@ const Dashboard = () => {
               <strong>Email:</strong> {email}
             </p>
             <p className="text-gray-600">
-              <strong>Verified:</strong>
+              <strong>Verified:</strong>{" "}
               {isVerified ? " Verified " : " Not Verified "}
             </p>
           </div>
@@ -96,12 +106,12 @@ const Dashboard = () => {
               <strong className="font-semibold flex justify-between items-center py-4">
                 <span>Referral Link </span>
                 <span
-                  onClick={handleCopy} // Add click event to the icon
-                  className="cursor-pointer text-blue-500  hover:text-gray-600 flex gap-2 items-center"
+                  onClick={handleCopy}
+                  className="cursor-pointer text-blue-500 hover:text-gray-600 flex gap-2 items-center"
                   title={copySuccess ? "Copied!" : "Copy"}
                 >
                   <FaCopy />
-                  <p className="text-sm">Copy link</p>
+                  <span className="text-sm">Copy link</span>
                 </span>
               </strong>
               <span className="text-gray-600">{referralLink}</span>
@@ -134,16 +144,30 @@ const Dashboard = () => {
               Downlines
             </h2>
             <ul className="list-none space-y-2">
-              {downlines?.map((downline) => {
-                return (
+              {Array.isArray(downlines) && downlines.length > 0 ? (
+                downlines.map((downline) => (
                   <li
-                    className="p-2 bg-gray-100 rounded-md text-gray-700"
-                    key={downline}
+                    className="p-2 bg-gray-100 rounded-md text-gray-700 flex flex-col gap-2"
+                    key={downline._id}
                   >
-                    <h2>{downline}</h2>
+                    <div className="flex gap-2 items-center justify-between">
+                      <h2 className="font-semibold">{downline.name}</h2>
+                      <img
+                        src={downline.photo}
+                        alt={`${downline.name} photo`}
+                        width={"40px"}
+                        height={"40px"}
+                        className="rounded-full"
+                      />
+                    </div>
+                    <p>{downline.email}</p>
                   </li>
-                );
-              })}
+                ))
+              ) : (
+                <li className="p-2 bg-gray-100 rounded-md text-gray-700">
+                  <h2>You don't have downlines currently.</h2>
+                </li>
+              )}
             </ul>
           </article>
           <article className="bg-gray-50 p-6 rounded-lg shadow-sm">
