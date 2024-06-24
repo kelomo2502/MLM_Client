@@ -105,7 +105,7 @@ export const getLoginStatus = createAsyncThunk(
   }
 );
 export const fetchDownlines = createAsyncThunk(
-  "auth/fetchDownlines",
+  "auth/getDownlines",
   async (marketerId, thunkAPI) => {
     try {
       const response = await authService.getDownlines(marketerId);
@@ -248,6 +248,7 @@ const authSlice = createSlice({
       .addCase(fetchDownlines.fulfilled, (state, action) => {
         state.isLoading = false;
         state.marketer.loggedInMarketer.downlines = action.payload;
+        console.log(action.payload);
       })
       .addCase(fetchDownlines.rejected, (state, action) => {
         state.isLoading = false;

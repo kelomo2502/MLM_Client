@@ -4,11 +4,13 @@ import axios from "axios";
 // export const API_URL = `${SERVER}/api/v1/`;
 
 const register = async (marketerData) => {
+  // http://localhost:3100
   try {
     const response = await axios.post(
       "http://localhost:3100/api/v1/register",
       marketerData
     );
+
     return response.data;
   } catch (error) {
     const message =
