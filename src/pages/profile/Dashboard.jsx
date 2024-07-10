@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   RESET_AUTH,
   fetchDownlines,
+  getLoginStatus,
   logoutMarketer,
 } from "../../redux/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";

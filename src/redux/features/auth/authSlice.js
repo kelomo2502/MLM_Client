@@ -248,6 +248,7 @@ const authSlice = createSlice({
       .addCase(fetchDownlines.fulfilled, (state, action) => {
         state.isLoading = false;
         state.marketer.loggedInMarketer.downlines = action.payload;
+        localStorage.setItem("authState", JSON.stringify(state));
         console.log(action.payload);
       })
       .addCase(fetchDownlines.rejected, (state, action) => {
