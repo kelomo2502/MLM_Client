@@ -11,7 +11,9 @@ import logo from "../../assets/Aisling (2).jpg";
 import { FaCopy } from "react-icons/fa";
 
 const Dashboard = () => {
-  const { isLoggedIn, marketer } = useSelector((state) => state.auth);
+  const { isLoggedIn, marketer } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,7 +29,10 @@ const Dashboard = () => {
   const fetchMarketerDownlines = () => {
     const marketerId = marketer?.loggedInMarketer?._id;
     if (marketerId) {
-      dispatch(fetchDownlines(marketerId));
+      dispatch(getLoginStatus());
+      if (getLoginStatus) {
+        dispatch(fetchDownlines(marketerId));
+      }
     }
   };
 
