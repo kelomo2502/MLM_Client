@@ -4,10 +4,10 @@ import axios from "axios";
 // export const API_URL = `${SERVER}/api/v1/`;
 
 const register = async (marketerData) => {
-  // http://localhost:3100, https://mlm-server.vercel.app/
+  // http://localhost:3100, http://localhost:3100/
   try {
     const response = await axios.post(
-      "https://mlm-server.vercel.app/api/v1/register",
+      "http://localhost:3100/api/v1/register",
       marketerData
     );
 
@@ -24,7 +24,7 @@ const register = async (marketerData) => {
 const registerWithReferral = async (marketerData, referralId) => {
   try {
     const response = await axios.post(
-      `https://mlm-server.vercel.app/api/v1/register/${referralId}`,
+      `http://localhost:3100/api/v1/register/${referralId}`,
       marketerData
     );
     return response.data;
@@ -43,9 +43,10 @@ const registerWithReferral = async (marketerData, referralId) => {
 };
 
 const login = async (marketerData) => {
+  // remote url http://localhost:3100
   try {
     const response = await axios.post(
-      "https://mlm-server.vercel.app/api/v1/login",
+      "http://localhost:3100/api/v1/login",
       marketerData
     );
     return response.data;
@@ -60,7 +61,7 @@ const login = async (marketerData) => {
 
 const logout = async () => {
   try {
-    const response = await axios.delete("https://mlm-server.vercel.app/api/v1/logout");
+    const response = await axios.delete("http://localhost:3100/api/v1/logout");
     return response.data.message;
   } catch (error) {
     if (error.response) {
@@ -79,7 +80,7 @@ const logout = async () => {
 const getLoginStatus = async () => {
   try {
     const response = await axios.get(
-      "https://mlm-server.vercel.app/api/v1/getLoginStatus",
+      "http://localhost:3100/api/v1/getLoginStatus",
       { withCredentials: true }
     );
     return response.data;
@@ -101,7 +102,7 @@ const getLoginStatus = async () => {
 const getDownlines = async (marketerId) => {
   try {
     const response = await axios.get(
-      `https://mlm-server.vercel.app/api/v1/${marketerId}/downlines`
+      `http://localhost:3100/api/v1/${marketerId}/downlines`
     );
     return response.data;
   } catch (error) {
