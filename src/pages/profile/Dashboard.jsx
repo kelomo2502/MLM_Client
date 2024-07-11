@@ -29,7 +29,7 @@ const Dashboard = () => {
     if (marketerId) {
       const loginStatus = await dispatch(getLoginStatus()).unwrap();
       if (loginStatus) {
-        dispatch(fetchDownlines(marketerId));
+        dispatch(fetchDownlines(marketerId).unwrap());
       }
     }
   };
@@ -38,7 +38,6 @@ const Dashboard = () => {
     dispatch(logoutMarketer());
     dispatch(RESET_AUTH());
   };
-
 
   useEffect(() => {
     fetchMarketerDownlines();
