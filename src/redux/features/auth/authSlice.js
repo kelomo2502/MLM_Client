@@ -92,6 +92,7 @@ export const getLoginStatus = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await authService.getLoginStatus();
+      console.log("API response:", response);
       return response;
     } catch (error) {
       const message =
@@ -189,6 +190,7 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isSuccess = true;
         state.marketer = action.payload;
+        console.log(`Marketer:${action.payload}`);
         state.isError = false;
         state.message = "";
         localStorage.setItem("authState", JSON.stringify(state));
@@ -230,6 +232,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isLoggedIn = action.payload;
+        console.log(`getLoginStatus:${action.payload}`);
         if (action.payload.message === "invalid signature") {
           state.isLoggedIn = false;
         }

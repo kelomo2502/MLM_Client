@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [copySuccess, setCopySuccess] = useState(false);
 
   useEffect(() => {
+    console.log(`isLoggedIn: ${isLoggedIn}`);
     if (!isLoggedIn) {
       navigate("/");
     }
@@ -27,9 +28,9 @@ const Dashboard = () => {
   const fetchMarketerDownlines = async () => {
     const marketerId = marketer?.loggedInMarketer?._id;
     if (marketerId) {
-      const loginStatus = await dispatch(getLoginStatus()).unwrap();
+      const loginStatus = await dispatch(getLoginStatus());
       if (loginStatus) {
-        dispatch(fetchDownlines(marketerId).unwrap());
+        dispatch(fetchDownlines(marketerId));
       }
     }
   };
